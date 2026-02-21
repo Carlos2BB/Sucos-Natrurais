@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Sucos - Sabor Tropical</title>
+<style>
+body{font-family:Arial;margin:0;background:#fff8e1}
+header{background:#ff9800;color:white;text-align:center;padding:15px}
+.produtos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;padding:20px}
+.card{background:white;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,0.1);overflow:hidden;text-align:center}
+.card img{width:100%;height:180px;object-fit:cover}
+.card-content{padding:10px}
+button{padding:8px;background:#ff9800;color:white;border:none;border-radius:5px;margin-top:5px}
+select{padding:5px;width:100%;margin-top:5px}
+</style>
+</head>
+<body>
+
+<header>
+<h2>🥤 Sucos Naturais</h2>
+<a href="index.html" style="color:white">⬅ Voltar</a>
+</header>
+
+<div class="produtos" id="listaSucos"></div>
+
+<script>
+const sucos = [
+{nome:"Laranja", preco500:8, preco1l:14, img:"https://minhasaude.proteste.org.br/wp-content/uploads/2022/10/muitas-laranjas.png.webp"},
+{nome:"Melancia", preco500:8, preco1l:14, img:"https://th.bing.com/th/id/OIP.7fdj1kpH58D88Npxi7iH4gHaE8"},
+{nome:"Maracujá", preco500:9, preco1l:16, img:"https://thumbs.dreamstime.com/b/passion-fruit-maracuya-background-delicious-tropical-54817849.jpg"},
+{nome:"Abacaxi", preco500:8, preco1l:14, img:"https://cn1.com.br/fotos/noticias/76238/IMAGEM_NOTICIA_1.jpg?v=53c8d6d227cc94f"},
+{nome:"Manga", preco500:9, preco1l:16, img:"https://capitalist.com.br/wp-content/uploads/2022/03/manga-frutas-beneficios-9_Easy-Resize.com_.jpg"},
+{nome:"Morango", preco500:10, preco1l:18, img:"https://conteudo.imguol.com.br/c/entretenimento/e7/2019/05/31/morango-1559345954482_v2_750x421.jpg"},
+{nome:"Acerola", preco500:9, preco1l:16, img:"https://tse2.mm.bing.net/th/id/OIP.bgbo4M1RSnINnMwfWR--BAHaEK"},
+{nome:"Limão", preco500:7, preco1l:12, img:"https://p2.trrsf.com/image/fget/cf/1200/630/middle/images.terra.com/2022/09/13/1100877965-beneficios-do-limao-1.jpg"}
+];
+
+const container = document.getElementById("listaSucos");
+
+sucos.forEach((suco,index)=>{
+container.innerHTML += `
+<div class="card">
+<img src="${suco.img}">
+<div class="card-content">
+<h3>Suco de ${suco.nome}</h3>
+<select id="tamanho${index}">
+<option value="500">500ml - R$ ${suco.preco500}</option>
+<option value="1000">1 Litro - R$ ${suco.preco1l}</option>
+</select>
+<button onclick="adicionar(${index})">Adicionar</button>
+</div>
+</div>
+`;
+});
+
+function adicionar(index){
+let tamanho=document.getElementById("tamanho"+index).value;
+let item=sucos[index];
+let preco=tamanho=="500"?item.preco500:item.preco1l;
+let nome=`Suco de ${item.nome} (${tamanho=="500"?"500ml":"1L"})`;
+
+let carrinho=JSON.parse(localStorage.getItem("carrinho"))||[];
+carrinho.push({nome,preco});
+localStorage.setItem("carrinho",JSON.stringify(carrinho));
+alert("Adicionado ao carrinho!");
+}
+</script>
+
+</body>
+</html>
