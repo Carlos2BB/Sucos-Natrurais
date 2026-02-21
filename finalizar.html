@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Finalizar - Sabor Tropical</title>
+<style>
+body{font-family:Arial;margin:0;background:#fff8e1;padding:20px}
+header{background:#ff9800;color:white;text-align:center;padding:15px}
+button{padding:8px;background:green;color:white;border:none;border-radius:5px;margin-top:10px}
+textarea{width:100%;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>
+<h2>🛒 Finalizar Pedido</h2>
+<a href="index.html" style="color:white">⬅ Voltar</a>
+</header>
+
+<h3>Itens:</h3>
+<ul id="lista"></ul>
+<p><strong>Total: R$ <span id="total"></span></strong></p>
+
+<h3>Seus Dados</h3>
+<input type="text" id="nome" placeholder="Seu nome"><br><br>
+<input type="text" id="telefone" placeholder="Seu telefone"><br><br>
+<input type="text" id="endereco" placeholder="Seu endereço"><br><br>
+
+<h3>Forma de Pagamento</h3>
+<select id="pagamento">
+<option>Pix</option>
+<option>Dinheiro</option>
+</select><br>
+
+<button onclick="finalizar()">Gerar Pedido</button>
+
+<div id="nota"></div>
+
+<script>
+let carrinho=JSON.parse(localStorage.getItem("carrinho"))||[];
+let lista=document.getElementById("lista");
+let total=0;
+
+carrinho.forEach(item=>{
+lista.innerHTML+=`<li>${item.nome} - R$ ${item.preco}</li>`;
+total+=item.preco;
+});
+
+document.getElementById("total").innerText=total;
+
+function finalizar(){
+let nome=document.getElementById("nome").value;
+let telefone=document.getElementById("telefone").value;
+let endereco=document.getElementById("endereco").value;
+let pagamento=document.getElementById("pagamento").value;
+
+let texto="PEDIDO - SABOR TROPICAL\n\n";
+texto+="Nome: "+nome+"\nTelefone: "+telefone+"\nEndereço: "+endereco+"\n";
+texto+="Pagamento: "+pagamento+"\n\nItens:\n";
+
+carrinho.forEach(item=>{
+texto+="- "+item.nome+" - R$ "+item.preco+"\n";
+});
+
+texto+="\nTotal: R$ "+total;
+
+document.getElementById("nota").innerHTML=`
+<h3>Copie o pedido:</h3>
+<textarea rows="12">${texto}</textarea>
+`;
+
+localStorage.removeItem("carrinho");
+}
+</script>
+
+</body>
+</html>
